@@ -30,10 +30,14 @@
     <br>
     <button onclick="clearCanvas()">Limpiar</button>
     <button onclick="saveSignature()">Guardar Firma</button>
-    <h3>Su firma se guardara en una imagen en su dispositivo</h3>
+    <h3>Su firma se guardará en una imagen en su dispositivo</h3>
     <script>
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
+
+        // Configuración del contexto del canvas
+        ctx.strokeStyle = "#000";  // Color de la línea
+        ctx.lineWidth = 2;         // Grosor de la línea
 
         let isDrawing = false;
 
@@ -41,12 +45,18 @@
         function startDrawing(e) {
             isDrawing = true;
             ctx.beginPath();
-            ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.moveTo(x, y);
         }
 
         function draw(e) {
             if (!isDrawing) return;
-            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.lineTo(x, y);
             ctx.stroke();
         }
 
@@ -80,12 +90,14 @@
 
         // Guardar la firma como imagen y descargarla en el celular
         function saveSignature() {
+            if (canvas.toDataURL() === canvas.toDataURL("image/png")) {
+                alert("La firma está vacía.");
+                return;
+            }
             const dataURL = canvas.toDataURL("image/png");
             const link = document.createElement("a");
             link.href = dataURL;
             link.download = "firma.png";
-            
-            // Forzar la descarga en dispositivos móviles
             link.style.display = "none";
             document.body.appendChild(link);
             link.click();
