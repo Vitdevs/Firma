@@ -1,0 +1,17 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+canvas {
+    border: 2px solid #000;
+    margin-top: 20px;
+    touch-action: none; /* Evitar desplazamiento accidental en dispositivos táctiles */
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
